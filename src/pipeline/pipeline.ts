@@ -1,5 +1,5 @@
 import {NonConstruct} from "@smorken/cdk-utils";
-import {CodeStarSource} from "./code-star-source";
+import {CodeStarSourcePipeline} from "./code-star-source";
 import {SynthStep} from "./synth-step";
 import {Repositories} from "../factories/repositories";
 import {Construct} from "@aws-cdk/core";
@@ -7,17 +7,17 @@ import {CodePipeline, DockerCredential} from "@aws-cdk/pipelines";
 import {IRepository} from "@aws-cdk/aws-ecr";
 import {LinuxBuildImage} from "@aws-cdk/aws-codebuild";
 
-export interface PipelineProps {
-    source: CodeStarSource;
+export interface PipelinesPipelineProps {
+    source: CodeStarSourcePipeline;
     synth: SynthStep;
     repositories: Repositories;
 }
 
-export class Pipeline extends NonConstruct {
-    readonly props: PipelineProps;
+export class PipelinesPipeline extends NonConstruct {
+    readonly props: PipelinesPipelineProps;
     readonly pipeline: CodePipeline;
 
-    constructor(scope: Construct, id: string, props: PipelineProps) {
+    constructor(scope: Construct, id: string, props: PipelinesPipelineProps) {
         super(scope, id);
         this.props = props;
         this.pipeline = this.createCodePipeline();
@@ -33,9 +33,7 @@ export class Pipeline extends NonConstruct {
                 buildEnvironment: {
                     buildImage: LinuxBuildImage.STANDARD_5_0,
                     privileged: true,
-                    environmentVariables: {
-
-                    }
+                    environmentVariables: {}
                 }
             }
         });
