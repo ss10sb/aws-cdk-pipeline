@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "alwaysStrict": true,
+    "target": "ES2018",
+    "module": "commonjs",
+    "declaration": true,
+    "strict": true,
+    "sourceMap": true,
+    "downlevelIteration": true,
+    "importHelpers": true,
+    "noEmitHelpers": true,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "declarationDir": "./lib/types",
+    "outDir": "./lib/cjs"
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "test",
+    "node_modules"
+  ]
+}

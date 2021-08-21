@@ -1,0 +1,69 @@
+{
+  "name": "@smorken/cdk-pipeline",
+  "version": "1.116.0",
+  "license": "MIT",
+  "author": "Scott Morken <scott.morken@phoenixcollege.edu>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ss10sb/aws-cdk-pipeline.git"
+  },
+  "main": "./lib/cjs/index.js",
+  "types": "./lib/types/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "devDependencies": {
+    "@aws-cdk/assert": "1.116.0",
+    "@types/jest": "^26.0.10",
+    "@types/node": "^10.17.60",
+    "@types/sinon": "^10.0.0",
+    "aws-cdk": "1.116.0",
+    "jest": "^26.4.2",
+    "sinon": "^11.1.2",
+    "ts-jest": "^26.2.0",
+    "ts-node": "^9.0.0",
+    "tslib": "^2.3.0",
+    "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-autoscaling": "1.116.0",
+    "@aws-cdk/aws-cloudwatch": "1.116.0",
+    "@aws-cdk/aws-cloudwatch-actions": "1.116.0",
+    "@aws-cdk/aws-codebuild": "1.116.0",
+    "@aws-cdk/aws-codestarnotifications": "1.116.0",
+    "@aws-cdk/aws-codepipeline": "1.116.0",
+    "@aws-cdk/aws-codepipeline-actions": "1.116.0",
+    "@aws-cdk/aws-dynamodb": "1.116.0",
+    "@aws-cdk/aws-ec2": "1.116.0",
+    "@aws-cdk/aws-ecr": "1.116.0",
+    "@aws-cdk/aws-ecr-assets": "1.116.0",
+    "@aws-cdk/aws-ecs": "1.116.0",
+    "@aws-cdk/aws-ecs-patterns": "1.116.0",
+    "@aws-cdk/aws-elasticloadbalancingv2": "1.116.0",
+    "@aws-cdk/aws-events-targets": "1.116.0",
+    "@aws-cdk/aws-iam": "1.116.0",
+    "@aws-cdk/aws-logs": "1.116.0",
+    "@aws-cdk/aws-route53": "1.116.0",
+    "@aws-cdk/aws-route53-targets": "1.116.0",
+    "@aws-cdk/aws-secretsmanager": "1.116.0",
+    "@aws-cdk/aws-sns": "1.116.0",
+    "@aws-cdk/aws-sns-subscriptions": "1.116.0",
+    "@aws-cdk/aws-sqs": "1.116.0",
+    "@aws-cdk/aws-ssm": "1.116.0",
+    "@aws-cdk/core": "1.116.0",
+    "@aws-cdk/custom-resources": "1.116.0",
+    "@aws-cdk/pipelines": "1.116.0",
+    "@aws-sdk/client-ecr": "^3.21.0",
+    "@aws-sdk/client-ssm": "^3.21.0",
+    "@smorken/cdk-utils": "1.116.0-1",
+    "source-map-support": "^0.5.16"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
+  }
+}

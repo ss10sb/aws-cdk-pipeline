@@ -1,0 +1,1 @@
+{"version":3,"file":"abstract-factory.js","sourceRoot":"","sources":["../../../src/factories/abstract-factory.ts"],"names":[],"mappings":";;;AAAA,kDAAgD;AAChD,sCAAiC;AAGjC,MAAsB,eAAgB,SAAQ,wBAAY;IAGtD,YAAsB,KAAgB,EAAE,EAAU;QAC9C,KAAK,CAAC,KAAK,EAAE,EAAE,CAAC,CAAC;QACjB,IAAI,CAAC,MAAM,GAAG,IAAI,eAAM,EAAE,CAAC;IAC/B,CAAC;CACJ;AAPD,0CAOC"}
