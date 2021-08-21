@@ -1,5 +1,5 @@
 import {NonConstruct} from "@smorken/cdk-utils";
-import {CodeStarSourcePipeline} from "./code-star-source";
+import {PipelinesCodeStarSource} from "./code-star-source";
 import {SynthStep} from "./synth-step";
 import {Repositories} from "../factories/repositories";
 import {Construct} from "@aws-cdk/core";
@@ -8,7 +8,7 @@ import {IRepository} from "@aws-cdk/aws-ecr";
 import {LinuxBuildImage} from "@aws-cdk/aws-codebuild";
 
 export interface PipelinesPipelineProps {
-    source: CodeStarSourcePipeline;
+    source: PipelinesCodeStarSource;
     synth: SynthStep;
     repositories: Repositories;
 }
