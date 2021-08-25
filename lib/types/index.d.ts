@@ -48,6 +48,7 @@ export * from './env-stack';
 export * from './env-stage';
 export * from './naming';
 export * from './run-task';
+export * from './s3';
 export * from './secret-keys';
 export * from './secrets';
 export * from './sqs';
