@@ -6,6 +6,7 @@ import { IStringParameter } from "@aws-cdk/aws-ssm";
 import { Repositories } from "./repositories";
 import { FargateTasksServices } from "./fargate-factory";
 import { TaskServiceType, Wrapper } from "../definitions/tasks-services";
+import { Bucket } from "@aws-cdk/aws-s3";
 export declare class Permissions {
     static accountIdsCanPullFromEcr(accountIds: string[], repositories: Repositories): void;
     static accountIdsCanDescribeEcr(accountIds: string[], repositories: Repositories): void;
@@ -22,6 +23,9 @@ export declare class Permissions {
     static wrappedCanReadWriteDynamoDb(wrapped: Wrapper[], dynamodb: Table): void;
     static taskRoleCanReadWriteDynamoDb(taskDefinition: TaskDefinition, dynamodb: Table): void;
     static tasksServicesCanUseQueue(ts: FargateTasksServices, queue: Queue): void;
+    static tasksServicesCanReadWriteS3(ts: FargateTasksServices, s3: Bucket): void;
+    static wrappedCanReadWriteS3(wrapped: Wrapper[], s3: Bucket): void;
+    static taskRoleCanReadWriteS3(taskDefinition: TaskDefinition, s3: Bucket): void;
     static wrappedCanUseQueue(wrapped: Wrapper[], queue: Queue): void;
     static taskRoleCanUseQueue(taskDefinition: TaskDefinition, queue: Queue, type?: TaskServiceType): void;
     static tasksServicesCanSendEmail(ts: FargateTasksServices): void;

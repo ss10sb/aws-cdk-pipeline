@@ -17,6 +17,7 @@ export declare class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
     private createDeadLetterQueue;
     private createDefaultQueue;
     private createDynamoDbTable;
+    private createS3Bucket;
     private createListenerRule;
     private createTasksAndServices;
     private createTargetGroup;

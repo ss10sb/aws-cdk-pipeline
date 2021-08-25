@@ -4,11 +4,13 @@ import { Construct } from "@aws-cdk/core";
 import { FargateTasksServices } from "../factories/fargate-factory";
 import { Table } from "@aws-cdk/aws-dynamodb";
 import { Queue } from "@aws-cdk/aws-sqs";
+import { Bucket } from "@aws-cdk/aws-s3";
 export interface EnvStackPermissionsProps {
     readonly tasksServices: FargateTasksServices;
     readonly table?: Table;
     readonly repositories: Repositories;
     readonly queue?: Queue;
+    readonly s3?: Bucket;
 }
 export declare class EnvStackPermissions extends NonConstruct {
     readonly props: EnvStackPermissionsProps;
@@ -17,4 +19,5 @@ export declare class EnvStackPermissions extends NonConstruct {
     protected dynamoDbTable(): void;
     protected sesEmail(): void;
     protected sqsQueue(): void;
+    protected s3Bucket(): void;
 }

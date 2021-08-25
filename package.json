@@ -1,6 +1,6 @@
 {
   "name": "@smorken/cdk-pipeline",
-  "version": "1.116.4",
+  "version": "1.116.5",
   "license": "MIT",
   "author": "Scott Morken <scott.morken@phoenixcollege.edu>",
   "repository": {
@@ -47,9 +47,11 @@
     "@aws-cdk/aws-elasticloadbalancingv2": "1.116.0",
     "@aws-cdk/aws-events-targets": "1.116.0",
     "@aws-cdk/aws-iam": "1.116.0",
+    "@aws-cdk/aws-kms": "1.116.0",
     "@aws-cdk/aws-logs": "1.116.0",
     "@aws-cdk/aws-route53": "1.116.0",
     "@aws-cdk/aws-route53-targets": "1.116.0",
+    "@aws-cdk/aws-s3": "1.116.0",
     "@aws-cdk/aws-secretsmanager": "1.116.0",
     "@aws-cdk/aws-sns": "1.116.0",
     "@aws-cdk/aws-sns-subscriptions": "1.116.0",

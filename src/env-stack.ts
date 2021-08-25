@@ -26,6 +26,8 @@ import {Secrets} from "./secrets";
 import {VerifySesDomain} from "./ses/verify-ses-domain";
 import {Ses} from "./ses/ses";
 import {EnvStackPermissions} from "./permissions/env-stack-permissions";
+import {Bucket} from "@aws-cdk/aws-s3";
+import {S3} from "./s3";
 
 interface TasksAndServicesProps {
     readonly targetGroup: IApplicationTargetGroup;
@@ -37,6 +39,7 @@ interface TasksAndServicesProps {
 interface EnvironmentProps {
     readonly table?: Table;
     readonly queue?: Queue;
+    readonly s3?: Bucket;
 }
 
 interface PermissionsProps {
@@ -44,6 +47,7 @@ interface PermissionsProps {
     readonly table?: Table;
     readonly repositories: Repositories;
     readonly queue?: Queue;
+    readonly s3?: Bucket;
 }
 
 export class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
@@ -68,19 +72,22 @@ export class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
         const listenerRule = this.createListenerRule(targetGroup);
         const table = this.createDynamoDbTable();
         const queue = this.createQueues();
+        const s3 = this.createS3Bucket();
         const tasksAndServices = this.createTasksAndServices({
             targetGroup: targetGroup,
             repositories: this.envProps.repositories,
             environment: this.getEnvironmentForContainers({
                 table: table ?? undefined,
-                queue: queue ?? undefined
+                queue: queue ?? undefined,
+                s3: s3 ?? undefined
             })
         });
         new EnvStackPermissions(this, this.getName('permissions'), {
             tasksServices: tasksAndServices,
             table: table ?? undefined,
             repositories: this.envProps.repositories,
-            queue: queue ?? undefined
+            queue: queue ?? undefined,
+            s3: s3 ?? undefined
         })
     }
 
@@ -150,6 +157,14 @@ export class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
         return null;
     }
 
+    private createS3Bucket(name: string = 's3'): Bucket | null {
+        if (this.config.Parameters.s3) {
+            const s3 = new S3(this, this.node.id);
+            return s3.create(name, this.config.Parameters.s3);
+        }
+        return null;
+    }
+
     private createListenerRule(targetGroup: IApplicationTargetGroup): ApplicationListenerRule {
         const lr = new AlbListenerRule(this, this.getName('listener-rule'), this.listener, this.config.Parameters.listenerRule);
         return lr.createListenerRule(targetGroup);
@@ -203,6 +218,9 @@ export class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
         }
         if (envProps.queue) {
             props['SQS_QUEUE'] = envProps.queue.queueUrl;
+        }
+        if (envProps.s3) {
+            props['AWS_BUCKET'] = envProps.s3.bucketName;
         }
         props['CAN_RUN_CREATE'] = this.config.Parameters.canCreateTask === false ? '0' : '1';
         return props;

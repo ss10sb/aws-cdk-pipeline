@@ -7,6 +7,7 @@ import {Repositories} from "./repositories";
 import {FargateTasksServices} from "./fargate-factory";
 import {TaskServiceType, Wrapper} from "../definitions/tasks-services";
 import {CfnRepository} from "@aws-cdk/aws-ecr";
+import {Bucket} from "@aws-cdk/aws-s3";
 
 export class Permissions {
 
@@ -18,6 +19,7 @@ export class Permissions {
             }
             return arns;
         }
+
         for (const [name, repo] of repositories.repoEntries()) {
             const cfnRepo = repo.node.defaultChild as CfnRepository;
             cfnRepo.repositoryPolicyText = {
@@ -48,6 +50,7 @@ export class Permissions {
             }
             return arns;
         }
+
         for (const [name, repo] of repositories.repoEntries()) {
             const cfnRepo = repo.node.defaultChild as CfnRepository;
             cfnRepo.repositoryPolicyText = {
@@ -166,6 +169,24 @@ export class Permissions {
         if (ts.queue) {
             Permissions.wrappedCanUseQueue([ts.queue], queue);
         }
+    }
+
+    static tasksServicesCanReadWriteS3(ts: FargateTasksServices, s3: Bucket): void {
+        Permissions.wrappedCanReadWriteS3(ts.services, s3);
+        Permissions.wrappedCanReadWriteS3(ts.tasks, s3);
+        if (ts.queue) {
+            Permissions.wrappedCanReadWriteS3([ts.queue], s3);
+        }
+    }
+
+    static wrappedCanReadWriteS3(wrapped: Wrapper[], s3: Bucket): void {
+        for (const wrap of wrapped) {
+            Permissions.taskRoleCanReadWriteS3(wrap.taskDefinition, s3);
+        }
+    }
+
+    static taskRoleCanReadWriteS3(taskDefinition: TaskDefinition, s3: Bucket): void {
+        s3.grantReadWrite(taskDefinition.taskRole);
     }
 
     static wrappedCanUseQueue(wrapped: Wrapper[], queue: Queue): void {
