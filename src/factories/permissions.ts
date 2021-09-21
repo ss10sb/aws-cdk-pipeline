@@ -105,15 +105,24 @@ export class Permissions {
         }
     }
 
-    static lambdaCanUpdateCluster(fn: lambda.Function, cluster: ICluster): void
-    {
+    static lambdaCanUpdateCluster(fn: lambda.Function, cluster: ICluster): void {
+        fn.addToRolePolicy(new PolicyStatement({
+            actions: [
+                'ecs:ListServices'
+            ],
+            resources: ['*']
+        }));
         fn.addToRolePolicy(new PolicyStatement({
             actions: [
                 'ecs:DescribeServices',
-                'ecs:ListServices',
                 'ecs:UpdateService',
             ],
-            resources: [cluster.clusterArn]
+            resources: ['*'],
+            conditions: {
+                'ArnEquals': {
+                    'ecs:cluster': cluster.clusterArn
+                }
+            }
         }));
     }
 

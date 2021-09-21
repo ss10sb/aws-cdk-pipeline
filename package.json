@@ -1,6 +1,6 @@
 {
   "name": "@smorken/cdk-pipeline",
-  "version": "1.116.7",
+  "version": "1.116.8",
   "license": "MIT",
   "author": "Scott Morken <scott.morken@phoenixcollege.edu>",
   "repository": {

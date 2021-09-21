@@ -1,10 +1,5 @@
-import {
-    ECS,
-    LaunchType,
-    ListServicesCommandOutput,
-    SchedulingStrategy,
-    UpdateServiceCommandOutput
-} from "@aws-sdk/client-ecs";
+const aws = require('aws-sdk');
+const ecs = new aws.ECS();
 
 interface EventLambda {
     cluster: string,
@@ -17,36 +12,40 @@ interface UpdateServiceParams {
     desiredCount: number
 }
 
-export const handler = async (event: EventLambda): Promise<string[]> => {
-    const promises = new Array<Promise<any>>();
-    const ecs = new ECS({});
-    const services: ListServicesCommandOutput = await ecs.listServices({
-        cluster: event.cluster,
-        launchType: LaunchType.FARGATE,
-        schedulingStrategy: SchedulingStrategy.REPLICA,
-        maxResults: 50
-    });
-    const desiredCount = event.status == 'start' ? 1 : 0
-    for (const service of services.serviceArns ?? []) {
-        promises.push(updateService(ecs, {
+interface ListServicesResponse {
+    serviceArns: string[];
+}
+
+interface UpdateServicesResponse {
+
+}
+
+export const handler = async (event: EventLambda) => {
+    console.log('Event', event);
+    const desiredCount = event.status == 'start' ? 1 : 0;
+    try {
+        const data: ListServicesResponse = await ecs.listServices({
             cluster: event.cluster,
-            service: service,
-            desiredCount: desiredCount
-        }));
+            maxResults: 50
+        }).promise();
+        console.log('Data', data);
+        for (const service of data.serviceArns ?? []) {
+            await updateService({
+                cluster: event.cluster,
+                service: service,
+                desiredCount: desiredCount
+            });
+        }
+    } catch (error) {
+        console.log('Error', error);
     }
-    return Promise.all(promises);
 };
 
-function updateService(ecs: ECS, params: UpdateServiceParams): Promise<string> {
-    return new Promise((resolve, reject) => {
-        ecs.updateService(params, function (err: any, data?: UpdateServiceCommandOutput) {
-            if (err) {
-                console.log(err, err.stack); // An error occurred
-                resolve(`${params.service} not updated`);
-            } else {
-                console.log(data); // Successful response
-                resolve(`${params.service} updated => Desired count: ${params.desiredCount}`)
-            }
-        });
-    })
+async function updateService(params: UpdateServiceParams) {
+    try {
+        await ecs.updateService(params).promise();
+        console.log(`Updated ${params.service} to ${params.desiredCount} count.`);
+    } catch (error) {
+        console.log('Error', error);
+    }
 }
