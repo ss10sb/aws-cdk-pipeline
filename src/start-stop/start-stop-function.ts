@@ -26,7 +26,7 @@ export class StartStopFunction extends NonConstruct {
             timeout: 5,
             runtime: Runtime.NODEJS_14_X,
             handler: 'index.handler',
-            code: Code.fromAsset(path.join(__dirname, '/lambda/index.js'))
+            code: Code.fromAsset(path.join(__dirname, '/lambda'))
         };
         this.function = this.create();
     }
