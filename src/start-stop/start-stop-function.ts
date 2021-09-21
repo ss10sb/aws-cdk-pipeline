@@ -1,7 +1,6 @@
 import {NonConstruct} from "@smorken/cdk-utils";
 import * as lambda from '@aws-cdk/aws-lambda';
-import {NodejsFunction} from "@aws-cdk/aws-lambda-nodejs";
-import {Runtime} from "@aws-cdk/aws-lambda";
+import {Code, Runtime} from "@aws-cdk/aws-lambda";
 import {Construct, Duration} from "@aws-cdk/core";
 import * as path from "path";
 
@@ -10,7 +9,7 @@ export interface StartStopFunctionProps {
     readonly timeout?: number;
     readonly runtime?: Runtime;
     readonly handler?: string;
-    readonly entry?: string;
+    readonly code?: string;
 }
 
 export class StartStopFunction extends NonConstruct {
@@ -27,18 +26,18 @@ export class StartStopFunction extends NonConstruct {
             timeout: 5,
             runtime: Runtime.NODEJS_14_X,
             handler: 'index.handler',
-            entry: path.join(__dirname, '/lambda/index.js')
+            code: Code.fromAsset(path.join(__dirname, '/lambda/index.js'))
         };
         this.function = this.create();
     }
 
     protected create(): lambda.Function {
-        return new NodejsFunction(this.scope, this.mixNameWithId('start-stop-lambda'), {
+        return new lambda.Function(this.scope, this.mixNameWithId('start-stop-lambda'), {
             memorySize: this.props.memorySize ?? this.defaults.memorySize,
             timeout: Duration.seconds(this.props.timeout ?? this.defaults.timeout),
             runtime: this.props.runtime ?? this.defaults.runtime,
             handler: this.props.handler ?? this.defaults.handler,
-            entry: this.props.entry ?? this.defaults.entry
+            code: this.props.code ?? this.defaults.code
         });
     }
 }

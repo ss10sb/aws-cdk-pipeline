@@ -7,7 +7,7 @@ export interface StartStopFunctionProps {
     readonly timeout?: number;
     readonly runtime?: Runtime;
     readonly handler?: string;
-    readonly entry?: string;
+    readonly code?: string;
 }
 export declare class StartStopFunction extends NonConstruct {
     readonly props: StartStopFunctionProps;
