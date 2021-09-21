@@ -6,13 +6,17 @@ import {Table} from "@aws-cdk/aws-dynamodb";
 import {Queue} from "@aws-cdk/aws-sqs";
 import {Permissions} from "../factories/permissions";
 import {Bucket} from "@aws-cdk/aws-s3";
+import {ICluster} from "@aws-cdk/aws-ecs";
+import {StartStop} from "../start-stop/start-stop";
 
 export interface EnvStackPermissionsProps {
+    readonly cluster: ICluster;
     readonly tasksServices: FargateTasksServices;
     readonly table?: Table;
     readonly repositories: Repositories;
     readonly queue?: Queue;
     readonly s3?: Bucket;
+    readonly startStop?: StartStop;
 }
 
 export class EnvStackPermissions extends NonConstruct {
@@ -29,6 +33,13 @@ export class EnvStackPermissions extends NonConstruct {
         this.sqsQueue();
         this.sesEmail();
         this.s3Bucket();
+        this.startStopHandler();
+    }
+
+    protected startStopHandler(): void {
+        if (this.props.startStop) {
+            Permissions.lambdaCanUpdateCluster(this.props.startStop.startStopFunc.function, this.props.cluster);
+        }
     }
 
     protected dynamoDbTable(): void {

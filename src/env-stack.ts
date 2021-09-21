@@ -1,6 +1,6 @@
 import {AlbUtils, ConfigStack, ConfigStackProps, VpcUtils} from "@smorken/cdk-utils";
 import {IVpc} from "@aws-cdk/aws-ec2";
-import {Cluster} from "@aws-cdk/aws-ecs";
+import {Cluster, ICluster} from "@aws-cdk/aws-ecs";
 import {ARecord} from "@aws-cdk/aws-route53";
 import {Domain} from "./domain";
 import {
@@ -28,6 +28,7 @@ import {Ses} from "./ses/ses";
 import {EnvStackPermissions} from "./permissions/env-stack-permissions";
 import {Bucket} from "@aws-cdk/aws-s3";
 import {S3} from "./s3";
+import {StartStop} from "./start-stop/start-stop";
 
 interface TasksAndServicesProps {
     readonly targetGroup: IApplicationTargetGroup;
@@ -73,7 +74,8 @@ export class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
         const table = this.createDynamoDbTable();
         const queue = this.createQueues();
         const s3 = this.createS3Bucket();
-        const tasksAndServices = this.createTasksAndServices({
+        const cluster = this.createCluster();
+        const tasksAndServices = this.createTasksAndServices(cluster, {
             targetGroup: targetGroup,
             repositories: this.envProps.repositories,
             environment: this.getEnvironmentForContainers({
@@ -82,12 +84,15 @@ export class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
                 s3: s3 ?? undefined
             })
         });
+        const startStop = this.createStartStopHandler(cluster);
         new EnvStackPermissions(this, this.getName('permissions'), {
+            cluster: cluster,
             tasksServices: tasksAndServices,
             table: table ?? undefined,
             repositories: this.envProps.repositories,
             queue: queue ?? undefined,
-            s3: s3 ?? undefined
+            s3: s3 ?? undefined,
+            startStop: startStop ?? undefined,
         })
     }
 
@@ -105,6 +110,14 @@ export class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
             });
         }
         return null;
+    }
+
+    private createStartStopHandler(cluster: ICluster): StartStop | undefined {
+        if (this.config.Parameters.startStop) {
+            const ss: StartStop = new StartStop(this, this.getName('start-stop'), this.config.Parameters.startStop);
+            ss.createRules(cluster);
+            return ss;
+        }
     }
 
     private createCluster(): Cluster {
@@ -170,9 +183,8 @@ export class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
         return lr.createListenerRule(targetGroup);
     }
 
-    private createTasksAndServices(props: TasksAndServicesProps): FargateTasksServices {
+    private createTasksAndServices(cluster: ICluster, props: TasksAndServicesProps): FargateTasksServices {
         const secrets = new Secrets(this, this.node.id);
-        const cluster = this.createCluster();
         const factory = new FargateFactory(this, this.node.id, {
             commandFactoryProps: {},
             containerFactoryProps: {

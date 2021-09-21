@@ -1,4 +1,4 @@
-import {TaskDefinition} from "@aws-cdk/aws-ecs";
+import {ICluster, TaskDefinition} from "@aws-cdk/aws-ecs";
 import {IGrantable, PolicyStatement} from "@aws-cdk/aws-iam";
 import {Table} from "@aws-cdk/aws-dynamodb";
 import {Queue} from "@aws-cdk/aws-sqs";
@@ -8,6 +8,7 @@ import {FargateTasksServices} from "./fargate-factory";
 import {TaskServiceType, Wrapper} from "../definitions/tasks-services";
 import {CfnRepository} from "@aws-cdk/aws-ecr";
 import {Bucket} from "@aws-cdk/aws-s3";
+import * as lambda from '@aws-cdk/aws-lambda';
 
 export class Permissions {
 
@@ -102,6 +103,18 @@ export class Permissions {
         for (const [name, repo] of repositories.repoEntries()) {
             repo.grant(grantee, 'ecr:DescribeImages');
         }
+    }
+
+    static lambdaCanUpdateCluster(fn: lambda.Function, cluster: ICluster): void
+    {
+        fn.addToRolePolicy(new PolicyStatement({
+            actions: [
+                'ecs:DescribeServices',
+                'ecs:ListServices',
+                'ecs:UpdateService',
+            ],
+            resources: [cluster.clusterArn]
+        }));
     }
 
     static tasksServicesCanPullFromEcr(ts: FargateTasksServices, repositories: Repositories): void {
