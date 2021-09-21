@@ -1,4 +1,4 @@
-import { TaskDefinition } from "@aws-cdk/aws-ecs";
+import { ICluster, TaskDefinition } from "@aws-cdk/aws-ecs";
 import { IGrantable, PolicyStatement } from "@aws-cdk/aws-iam";
 import { Table } from "@aws-cdk/aws-dynamodb";
 import { Queue } from "@aws-cdk/aws-sqs";
@@ -7,6 +7,7 @@ import { Repositories } from "./repositories";
 import { FargateTasksServices } from "./fargate-factory";
 import { TaskServiceType, Wrapper } from "../definitions/tasks-services";
 import { Bucket } from "@aws-cdk/aws-s3";
+import * as lambda from '@aws-cdk/aws-lambda';
 export declare class Permissions {
     static accountIdsCanPullFromEcr(accountIds: string[], repositories: Repositories): void;
     static accountIdsCanDescribeEcr(accountIds: string[], repositories: Repositories): void;
@@ -15,6 +16,7 @@ export declare class Permissions {
     static granteeCanPushPullFromRepositories(grantee: IGrantable, repositories: Repositories): void;
     static granteeCanPullFromRepositories(grantee: IGrantable, repositories: Repositories): void;
     static granteeCanDescribeRepositories(grantee: IGrantable, repositories: Repositories): void;
+    static lambdaCanUpdateCluster(fn: lambda.Function, cluster: ICluster): void;
     static tasksServicesCanPullFromEcr(ts: FargateTasksServices, repositories: Repositories): void;
     static wrappedCanPullFromEcr(wrapped: Wrapper[], repositories: Repositories): void;
     static executionRoleCanPullFromEcr(taskDefinition: TaskDefinition, repositories: Repositories): void;

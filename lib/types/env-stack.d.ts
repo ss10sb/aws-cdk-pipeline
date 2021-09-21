@@ -12,6 +12,7 @@ export declare class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
     exec(): void;
     private createARecord;
     private createSesVerifyDomain;
+    private createStartStopHandler;
     private createCluster;
     private createQueues;
     private createDeadLetterQueue;

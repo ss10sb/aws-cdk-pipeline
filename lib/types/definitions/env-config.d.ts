@@ -6,6 +6,7 @@ import { DynamoDbProps } from "../dynamodb";
 import { QueueProps, ServiceProps, TaskProps } from "./tasks-services";
 import { Repositories } from "../factories/repositories";
 import { S3Props } from "../s3";
+import { StartStopProps } from "../start-stop/start-stop";
 export interface EnvConfig extends ParentEnvConfig {
     readonly Parameters: EnvParameters;
 }
@@ -29,5 +30,6 @@ export interface EnvParameters extends ParentEnvParameters {
     readonly queue?: QueueProps;
     readonly alarmEmails?: string[];
     readonly s3?: S3Props;
+    readonly startStop?: StartStopProps;
     secretKeys?: string[];
 }
