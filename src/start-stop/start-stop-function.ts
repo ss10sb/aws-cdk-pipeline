@@ -26,8 +26,8 @@ export class StartStopFunction extends NonConstruct {
             memorySize: 128,
             timeout: 5,
             runtime: Runtime.NODEJS_14_X,
-            handler: 'handler',
-            entry: path.join(__dirname, '/lambda/index.ts')
+            handler: 'index.handler',
+            entry: path.join(__dirname, '/lambda/index.js')
         };
         this.function = this.create();
     }
