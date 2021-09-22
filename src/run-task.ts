@@ -50,13 +50,26 @@ export class RunTask extends Construct implements IConnectable {
                 }
             }
         }
-        this.resource = new AwsCustomResource(this, `${this.node.id}-ecs-run-task`, {
+        const name = this.getName(props);
+        this.resource = new AwsCustomResource(this, name, {
             onCreate: props.runOnCreate ? onEvent : undefined,
             onUpdate: props.runOnUpdate ? onEvent : undefined,
             policy: AwsCustomResourcePolicy.fromSdkCalls({resources: [this.taskDefinition.taskDefinitionArn]}),
-            logRetention: RetentionDays.ONE_WEEK
+            logRetention: RetentionDays.ONE_WEEK,
+            functionName: name
         });
         this.taskDefinition.taskRole.grantPassRole(this.resource.grantPrincipal);
         this.taskDefinition.obtainExecutionRole().grantPassRole(this.resource.grantPrincipal);
+    }
+
+    protected getName(props: RunTaskProps): string {
+        let parts = [this.node.id, 'run-ecs-task'];
+        if (props.runOnCreate) {
+            parts.push('create');
+        }
+        if (props.runOnUpdate) {
+            parts.push('update');
+        }
+        return parts.join('-');
     }
 }

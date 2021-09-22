@@ -19,4 +19,5 @@ export declare class RunTask extends Construct implements IConnectable {
     readonly cluster: ICluster;
     readonly taskDefinition: FargateTaskDefinition;
     constructor(scope: Construct, id: string, props: RunTaskProps);
+    protected getName(props: RunTaskProps): string;
 }
