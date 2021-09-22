@@ -114,7 +114,7 @@ export class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
 
     private createStartStopHandler(cluster: ICluster): StartStop | undefined {
         if (this.config.Parameters.startStop) {
-            const ss: StartStop = new StartStop(this, this.getName('start-stop'), this.config.Parameters.startStop);
+            const ss: StartStop = new StartStop(this, this.node.id, this.config.Parameters.startStop);
             ss.createRules(cluster);
             return ss;
         }

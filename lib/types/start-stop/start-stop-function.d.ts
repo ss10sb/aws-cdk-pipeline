@@ -1,6 +1,6 @@
 import { NonConstruct } from "@smorken/cdk-utils";
 import * as lambda from '@aws-cdk/aws-lambda';
-import { Runtime } from "@aws-cdk/aws-lambda";
+import { Runtime } from '@aws-cdk/aws-lambda';
 import { Construct } from "@aws-cdk/core";
 export interface StartStopFunctionProps {
     readonly memorySize?: number;

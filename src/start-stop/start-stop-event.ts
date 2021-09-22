@@ -30,7 +30,7 @@ export class StartStopEvent extends NonConstruct {
     }
 
     public create(props: LambdaEventProps): Rule {
-        const rule: Rule = new Rule(this.scope, this.mixNameWithId(props.status), {
+        const rule: Rule = new Rule(this.scope, this.mixNameWithId(`start-stop-${props.status}-rule`), {
             schedule: Schedule.expression(props.schedule),
         });
         rule.addTarget(new LambdaFunction(this.props.lambdaFunction, {

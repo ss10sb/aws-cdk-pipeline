@@ -1,8 +1,9 @@
 import {NonConstruct} from "@smorken/cdk-utils";
 import * as lambda from '@aws-cdk/aws-lambda';
-import {Code, Runtime} from "@aws-cdk/aws-lambda";
+import {Code, Runtime} from '@aws-cdk/aws-lambda';
 import {Construct, Duration} from "@aws-cdk/core";
 import * as path from "path";
+import {RetentionDays} from "@aws-cdk/aws-logs";
 
 export interface StartStopFunctionProps {
     readonly memorySize?: number;
@@ -32,12 +33,15 @@ export class StartStopFunction extends NonConstruct {
     }
 
     protected create(): lambda.Function {
-        return new lambda.Function(this.scope, this.mixNameWithId('start-stop-lambda'), {
+        const name = this.mixNameWithId('start-stop-fn');
+        return new lambda.Function(this.scope, name, {
             memorySize: this.props.memorySize ?? this.defaults.memorySize,
             timeout: Duration.seconds(this.props.timeout ?? this.defaults.timeout),
             runtime: this.props.runtime ?? this.defaults.runtime,
             handler: this.props.handler ?? this.defaults.handler,
-            code: this.props.code ?? this.defaults.code
+            code: this.props.code ?? this.defaults.code,
+            logRetention: RetentionDays.ONE_MONTH,
+            functionName: name
         });
     }
 }
