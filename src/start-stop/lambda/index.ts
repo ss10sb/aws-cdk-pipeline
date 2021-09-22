@@ -23,15 +23,16 @@ interface UpdateServicesResponse {
 export const handler = async (event: EventLambda) => {
     console.log('Event', event);
     const desiredCount = event.status == 'start' ? 1 : 0;
+    const cluster = event.cluster ?? process.env.CLUSTER;
     try {
         const data: ListServicesResponse = await ecs.listServices({
-            cluster: event.cluster,
+            cluster: cluster,
             maxResults: 50
         }).promise();
         console.log('Data', data);
         for (const service of data.serviceArns ?? []) {
             await updateService({
-                cluster: event.cluster,
+                cluster: cluster,
                 service: service,
                 desiredCount: desiredCount
             });

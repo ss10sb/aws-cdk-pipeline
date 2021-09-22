@@ -4,6 +4,7 @@ import {Code, Runtime} from '@aws-cdk/aws-lambda';
 import {Construct, Duration} from "@aws-cdk/core";
 import * as path from "path";
 import {RetentionDays} from "@aws-cdk/aws-logs";
+import {ICluster} from "@aws-cdk/aws-ecs";
 
 export interface StartStopFunctionProps {
     readonly memorySize?: number;
@@ -11,6 +12,7 @@ export interface StartStopFunctionProps {
     readonly runtime?: Runtime;
     readonly handler?: string;
     readonly code?: string;
+    cluster?: ICluster;
 }
 
 export class StartStopFunction extends NonConstruct {
@@ -41,7 +43,10 @@ export class StartStopFunction extends NonConstruct {
             handler: this.props.handler ?? this.defaults.handler,
             code: this.props.code ?? this.defaults.code,
             logRetention: RetentionDays.ONE_MONTH,
-            functionName: name
+            functionName: name,
+            environment: {
+                CLUSTER: this.props.cluster?.clusterArn ?? ''
+            }
         });
     }
 }
