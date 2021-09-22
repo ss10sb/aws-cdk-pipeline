@@ -245,7 +245,7 @@ export class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
     }
 
     private handleLookups(): void {
-        const albArn = AlbLookup.getAlbArn(this, AlbUtils.getAlbArnParamKey(this.config));
+        const albArn = AlbLookup.getAlbArn(this, this.config);
         this.listener = ListenerLookup.getApplicationListener(this, this.config, albArn);
         this.alb = AlbLookup.getAlb(this, this.config, albArn);
         this.vpc = VpcUtils.getVpcFromConfig(this, this.config);

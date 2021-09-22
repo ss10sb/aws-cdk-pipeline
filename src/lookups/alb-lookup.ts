@@ -12,7 +12,11 @@ export class AlbLookup {
         return `${AlbUtils.getDefaultAlbName(config, name)}-arn`;
     }
 
-    public static getAlbArn(scope: Construct, arnParamKey: string): string {
+    public static getAlbArn(scope: Construct, config: Config): string {
+        if (config.Parameters.albArn) {
+            return config.Parameters.albArn;
+        }
+        const arnParamKey = AlbUtils.getAlbArnParamKey(config);
         return AlbUtils.getArnFromParams(scope, arnParamKey);
     }
 }

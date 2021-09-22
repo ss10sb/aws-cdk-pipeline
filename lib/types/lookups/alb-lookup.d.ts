@@ -4,5 +4,5 @@ import { Construct } from "@aws-cdk/core";
 export declare class AlbLookup {
     static getAlb(scope: Construct, config: Config, albArn: string): IApplicationLoadBalancer;
     static getAlbArnParamKey(config: Config, name?: string): string;
-    static getAlbArn(scope: Construct, arnParamKey: string): string;
+    static getAlbArn(scope: Construct, config: Config): string;
 }
