@@ -15,6 +15,7 @@ export declare class EnvStages extends NonConstruct {
     readonly stages: CdkStage[];
     constructor(scope: Construct, id: string, props: EnvStagesProps);
     createEnvStageFromEnvironment(envConfig: EnvConfig, envProps: EnvProps): EnvStage;
+    protected getStageName(envConfig: EnvConfig): string;
     protected createEnvironmentStages(): CdkStage[];
     protected actionsFromEnvironment(cdkStage: CdkStage, envConfig: EnvConfig): void;
 }

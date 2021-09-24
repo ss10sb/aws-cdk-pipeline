@@ -18,12 +18,12 @@ export class SecretKeys {
     }
 
     private getSecretKeys(config: EnvConfig): string[] {
-        const secretsConfig = this.getSecretsConfig(config.Environment);
+        const secretsConfig = this.getSecretsConfig(config.Environment, config.NameSuffix);
         return this.convertSecretsToKeys(secretsConfig);
     }
 
-    private getSecretsConfig(env: string): SecretsConfig {
-        return Utils.getConfig<SecretsConfig>(this.configDir, 'secrets', env);
+    private getSecretsConfig(env: string, suffix?: string): SecretsConfig {
+        return Utils.getConfig<SecretsConfig>(this.configDir, 'secrets', env, suffix);
     }
 
     private convertSecretsToKeys(secretsConfig: SecretsConfig): string[] {

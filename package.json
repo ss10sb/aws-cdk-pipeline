@@ -1,6 +1,6 @@
 {
   "name": "@smorken/cdk-pipeline",
-  "version": "1.124.0-3",
+  "version": "1.124.0-4",
   "license": "MIT",
   "author": "Scott Morken <scott.morken@phoenixcollege.edu>",
   "repository": {
@@ -66,7 +66,7 @@
     "@aws-sdk/client-ecr": "^3.21.0",
     "@aws-sdk/client-ecs": "^3.21.0",
     "@aws-sdk/client-ssm": "^3.21.0",
-    "@smorken/cdk-utils": "1.124.0-2",
+    "@smorken/cdk-utils": "1.124.0-3",
     "source-map-support": "^0.5.16"
   },
   "optionalDependencies": {

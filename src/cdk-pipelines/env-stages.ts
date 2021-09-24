@@ -24,7 +24,7 @@ export class EnvStages extends NonConstruct {
     }
 
     public createEnvStageFromEnvironment(envConfig: EnvConfig, envProps: EnvProps): EnvStage {
-        const name = `${envConfig.Environment}-stage`;
+        const name = this.getStageName(envConfig);
         const env = {
             account: envConfig.AWSAccountId ?? process.env.CDK_DEFAULT_ACCOUNT,
             region: envConfig.AWSRegion ?? process.env.CDK_DEFAULT_REGION
@@ -34,6 +34,15 @@ export class EnvStages extends NonConstruct {
         });
         stage.exec(envConfig, envProps);
         return stage;
+    }
+
+    protected getStageName(envConfig: EnvConfig): string {
+        let parts: string[] = [envConfig.Environment];
+        if (envConfig.NameSuffix) {
+            parts.push(envConfig.NameSuffix);
+        }
+        parts.push('stage');
+        return parts.join('-');
     }
 
     protected createEnvironmentStages(): CdkStage[] {
