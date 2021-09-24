@@ -212,7 +212,7 @@ export class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
                 skipCreateTask: this.config.Parameters.canCreateTask ?? true
             }
         });
-        return factory.create(this.config.Parameters.tasks, this.config.Parameters.services, this.config.Parameters.queue);
+        return factory.create(this.config.Parameters.tasks ?? [], this.config.Parameters.services ?? [], this.config.Parameters.queue);
     }
 
     private createTargetGroup(): IApplicationTargetGroup {
