@@ -63,13 +63,7 @@ export class RunTask extends Construct implements IConnectable {
     }
 
     protected getName(props: RunTaskProps): string {
-        let parts = [this.node.id, 'run-ecs-task'];
-        if (props.runOnCreate) {
-            parts.push('create');
-        }
-        if (props.runOnUpdate) {
-            parts.push('update');
-        }
+        let parts = [this.node.id, 'fn'];
         return parts.join('-');
     }
 }
