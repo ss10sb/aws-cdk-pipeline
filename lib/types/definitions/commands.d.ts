@@ -7,17 +7,18 @@ export declare enum EntryPoint {
 export declare enum Command {
     ARTISAN = 0,
     ON_CREATE = 1,
-    MIGRATE = 2,
-    MIGRATE_SEED = 3,
-    MIGRATE_REFRESH = 4,
-    SEED = 5,
-    QUEUE_WORK = 6,
-    QUEUE_ONE = 7,
-    QUEUE_EXIT = 8,
-    ROLE_SET = 9,
-    SCHEDULE_ONE = 10,
-    SCHEDULE_WORK = 11,
-    UNDEFINED = 12
+    ON_UPDATE = 2,
+    MIGRATE = 3,
+    MIGRATE_SEED = 4,
+    MIGRATE_REFRESH = 5,
+    SEED = 6,
+    QUEUE_WORK = 7,
+    QUEUE_ONE = 8,
+    QUEUE_EXIT = 9,
+    ROLE_SET = 10,
+    SCHEDULE_ONE = 11,
+    SCHEDULE_WORK = 12,
+    UNDEFINED = 13
 }
 export interface ContainerCommand {
     readonly entryPoint?: string[];

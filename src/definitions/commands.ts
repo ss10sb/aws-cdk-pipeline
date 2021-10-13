@@ -8,6 +8,7 @@ export enum EntryPoint {
 export enum Command {
     ARTISAN,
     ON_CREATE,
+    ON_UPDATE,
     MIGRATE,
     MIGRATE_SEED,
     MIGRATE_REFRESH,

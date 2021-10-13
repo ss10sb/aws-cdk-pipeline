@@ -27,6 +27,9 @@ export class CommandFactory extends AbstractFactory {
             [Command.ON_CREATE]: [
                 '/on_create.sh'
             ],
+            [Command.ON_UPDATE]: [
+                '/on_update.sh'
+            ],
             [Command.MIGRATE]: [
                 'artisan',
                 'migrate',
