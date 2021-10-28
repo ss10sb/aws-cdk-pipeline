@@ -5,7 +5,7 @@ import {ICluster} from "@aws-cdk/aws-ecs";
 import {LambdaEventStatus, StartStopEvent} from "./start-stop-event";
 
 export interface StartStopProps {
-    readonly start: string;
+    readonly start?: string;
     readonly stop: string;
     startStopFunctionProps?: StartStopFunctionProps;
 }
@@ -25,11 +25,13 @@ export class StartStop extends NonConstruct {
         this.event = new StartStopEvent(this.scope, this.id, {
             lambdaFunction: this.startStopFunc.function
         });
-        this.event.create({
-            clusterArn: cluster.clusterArn,
-            status: LambdaEventStatus.START,
-            schedule: this.props.start
-        });
+        if (this.props.start) {
+            this.event.create({
+                clusterArn: cluster.clusterArn,
+                status: LambdaEventStatus.START,
+                schedule: this.props.start
+            });
+        }
         this.event.create({
             clusterArn: cluster.clusterArn,
             status: LambdaEventStatus.STOP,
