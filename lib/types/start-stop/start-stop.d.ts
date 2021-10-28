@@ -4,7 +4,7 @@ import { StartStopFunction, StartStopFunctionProps } from "./start-stop-function
 import { ICluster } from "@aws-cdk/aws-ecs";
 import { StartStopEvent } from "./start-stop-event";
 export interface StartStopProps {
-    readonly start: string;
+    readonly start?: string;
     readonly stop: string;
     startStopFunctionProps?: StartStopFunctionProps;
 }
