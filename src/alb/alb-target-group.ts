@@ -31,7 +31,8 @@ export class AlbTargetGroup extends NonConstruct {
             port: props.port ?? 80,
             vpc: this.vpc,
             protocol: props.protocol ?? ApplicationProtocol.HTTP,
-            targetType: props.targetType ?? TargetType.IP
+            targetType: props.targetType ?? TargetType.IP,
+            targetGroupName: this.id
         });
         this.configureHealthCheck(targetGroup);
         return targetGroup;

@@ -64,6 +64,7 @@ export class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
         this.handleLookups();
         Tags.of(scope).add('College', config.College);
         Tags.of(scope).add('Environment', config.Environment);
+        Tags.of(scope).add('App', config.Name);
     }
 
     exec() {
