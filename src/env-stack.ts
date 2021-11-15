@@ -217,7 +217,7 @@ export class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
     }
 
     private createTargetGroup(): IApplicationTargetGroup {
-        const tg = new AlbTargetGroup(this, this.getName('target-group'), this.vpc, this.config);
+        const tg = new AlbTargetGroup(this, this.getName('tg'), this.vpc, this.config);
         return tg.createApplicationTargetGroup();
     }
 
