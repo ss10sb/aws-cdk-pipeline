@@ -126,7 +126,8 @@ export class EnvStack<T extends EnvConfig> extends ConfigStack<T> {
     private createCluster(): Cluster {
         const clusterFactory = new ClusterFactory(this, this.node.id, {
             vpc: this.vpc,
-            alarmEmails: this.config.Parameters.alarmEmails ?? []
+            alarmEmails: this.config.Parameters.alarmEmails ?? [],
+            containerInsights: this.config.Parameters.containerInsights ?? false,
         });
         return clusterFactory.create();
     }

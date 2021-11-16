@@ -31,5 +31,6 @@ export interface EnvParameters extends ParentEnvParameters {
     readonly alarmEmails?: string[];
     readonly s3?: S3Props;
     readonly startStop?: StartStopProps;
+    readonly containerInsights?: boolean;
     secretKeys?: string[];
 }

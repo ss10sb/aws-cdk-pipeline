@@ -11,6 +11,7 @@ export interface ClusterFactoryProps {
     alarmEmails?: string[];
     vpc: IVpc;
     securityGroupIds?: string[];
+    containerInsights?: boolean;
 }
 
 export class ClusterFactory extends AbstractFactory {
@@ -25,7 +26,7 @@ export class ClusterFactory extends AbstractFactory {
         const name = this.mixNameWithId('cluster');
         const cluster = new Cluster(this.scope, name, {
             vpc: this.props.vpc,
-            containerInsights: true,
+            containerInsights: this.props.containerInsights ?? false,
             clusterName: name
         });
         this.createAlarms(cluster);

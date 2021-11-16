@@ -6,6 +6,7 @@ export interface ClusterFactoryProps {
     alarmEmails?: string[];
     vpc: IVpc;
     securityGroupIds?: string[];
+    containerInsights?: boolean;
 }
 export declare class ClusterFactory extends AbstractFactory {
     readonly props: ClusterFactoryProps;
