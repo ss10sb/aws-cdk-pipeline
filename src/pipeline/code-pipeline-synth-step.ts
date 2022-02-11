@@ -3,16 +3,16 @@ import {Construct} from "@aws-cdk/core";
 import {CodeBuildStep, CodePipelineSource, IFileSetProducer} from "@aws-cdk/pipelines";
 import {Role, ServicePrincipal} from "@aws-cdk/aws-iam";
 
-export interface SynthStepProps {
+export interface CodePipelineSynthStepProps {
     source: CodePipelineSource;
 }
 
-export class SynthStep extends NonConstruct {
+export class CodePipelineSynthStep extends NonConstruct {
     readonly synth: IFileSetProducer | CodeBuildStep;
-    readonly props: SynthStepProps;
+    readonly props: CodePipelineSynthStepProps;
     readonly role: Role;
 
-    constructor(scope: Construct, id: string, props: SynthStepProps) {
+    constructor(scope: Construct, id: string, props: CodePipelineSynthStepProps) {
         super(scope, id);
         this.props = props;
         this.role = new Role(this.scope, this.mixNameWithId('synth-step-role'), {

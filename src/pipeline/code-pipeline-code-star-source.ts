@@ -3,7 +3,7 @@ import {Construct} from "@aws-cdk/core";
 import {CodeStarSourceProps} from "../definitions/source";
 import {CodePipelineSource} from "@aws-cdk/pipelines";
 
-export class PipelinesCodeStarSource extends NonConstruct {
+export class CodePipelineCodeStarSource extends NonConstruct {
     readonly props: CodeStarSourceProps;
     readonly source: CodePipelineSource;
 

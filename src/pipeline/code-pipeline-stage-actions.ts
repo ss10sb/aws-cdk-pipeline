@@ -9,7 +9,7 @@ interface Actionable {
     actionProps?: { [key: string]: string | number | boolean }
 }
 
-export class PipelinesStageActions {
+export class CodePipelineStageActions {
     readonly stage: IStage;
     readonly map: { [key: string]: Actionable };
 

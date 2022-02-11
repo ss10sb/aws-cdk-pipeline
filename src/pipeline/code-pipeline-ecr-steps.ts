@@ -3,20 +3,20 @@ import {Construct} from "@aws-cdk/core";
 import {CodeBuildStep} from "@aws-cdk/pipelines";
 import {IRole, Role, ServicePrincipal} from "@aws-cdk/aws-iam";
 import {Repositories} from "../factories/repositories";
-import {PipelinesCodeStarSource} from "./code-star-source";
-import {EcrStep} from "./ecr-step";
+import {CodePipelineCodeStarSource} from "./code-pipeline-code-star-source";
+import {CodePipelineEcrStep} from "./code-pipeline-ecr-step";
 
-export interface EcrStepsProps {
+export interface CodePipelineEcrStepsProps {
     repositories: Repositories;
-    source: PipelinesCodeStarSource;
+    source: CodePipelineCodeStarSource;
 }
 
-export class EcrSteps extends NonConstruct {
-    readonly props: EcrStepsProps;
+export class CodePipelineEcrSteps extends NonConstruct {
+    readonly props: CodePipelineEcrStepsProps;
     readonly steps: CodeBuildStep[];
     readonly role: IRole;
 
-    constructor(scope: Construct, id: string, props: EcrStepsProps) {
+    constructor(scope: Construct, id: string, props: CodePipelineEcrStepsProps) {
         super(scope, id);
         this.props = props;
         this.role = new Role(this.scope, `${this.scope.node.id}-ecr-step-role`, {
@@ -28,7 +28,7 @@ export class EcrSteps extends NonConstruct {
     private createEcrSteps(): CodeBuildStep[] {
         let steps: CodeBuildStep[] = [];
         for (const [name, repo] of this.props.repositories.repoEntries()) {
-            const ecrStep = new EcrStep(this.scope, `${this.scope.node.id}-${name}-step`, {
+            const ecrStep = new CodePipelineEcrStep(this.scope, `${this.scope.node.id}-${name}-step`, {
                 role: this.role,
                 source: this.props.source,
                 imageTag: this.props.repositories.getTagForImage(name),

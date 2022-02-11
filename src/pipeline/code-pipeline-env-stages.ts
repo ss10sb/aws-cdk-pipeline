@@ -1,23 +1,23 @@
 import {NonConstruct} from "@smorken/cdk-utils";
-import {PipelinesPipeline} from "./pipeline";
+import {CodePipelinePipeline} from "./code-pipeline-pipeline";
 import {Repositories} from "../factories/repositories";
 import {EnvConfig, EnvProps} from "../definitions/env-config";
 import {Construct} from "@aws-cdk/core";
 import {EnvStage} from "../env-stage";
 import {IStage} from "@aws-cdk/aws-codepipeline";
-import {PipelinesStageActions} from "./stage-actions";
+import {CodePipelineStageActions} from "./code-pipeline-stage-actions";
 
-export interface PipelinesEnvStageProps {
-    pipeline: PipelinesPipeline;
+export interface CodePipelineEnvStageProps {
+    pipeline: CodePipelinePipeline;
     repositories: Repositories;
     environments: EnvConfig[];
 }
 
-export class PipelinesEnvStages extends NonConstruct {
-    readonly props: PipelinesEnvStageProps;
+export class CodePipelineEnvStages extends NonConstruct {
+    readonly props: CodePipelineEnvStageProps;
     readonly stages: IStage[];
 
-    constructor(scope: Construct, id: string, props: PipelinesEnvStageProps) {
+    constructor(scope: Construct, id: string, props: CodePipelineEnvStageProps) {
         super(scope, id);
         this.props = props;
         this.stages = this.createEnvironmentStages();
@@ -62,7 +62,7 @@ export class PipelinesEnvStages extends NonConstruct {
     }
 
     protected actionsFromEnvironment(stage: IStage, envConfig: EnvConfig): void {
-        const stageActions = new PipelinesStageActions(stage);
+        const stageActions = new CodePipelineStageActions(stage);
         stageActions.fromEnvConfig(envConfig);
     }
 }

@@ -1,7 +1,7 @@
 import { NonConstruct } from "@smorken/cdk-utils";
 import { Construct } from "@aws-cdk/core";
 import { IStringParameter } from "@aws-cdk/aws-ssm";
-import { SynthStep } from "../pipeline/synth-step";
+import { CodePipelineSynthStep } from "../pipeline/code-pipeline-synth-step";
 import { Repositories } from "../factories/repositories";
 import { SimpleSynthAction } from "@aws-cdk/pipelines";
 import { IPrincipal } from "@aws-cdk/aws-iam";
@@ -9,7 +9,7 @@ import { EcrCodeBuild } from "../cdk-pipelines/ecr-code-build";
 import { EnvConfig } from "../definitions/env-config";
 export interface PipelineStackPermissionsProps {
     configParam: IStringParameter;
-    synth: SynthStep | SimpleSynthAction;
+    synth: CodePipelineSynthStep | SimpleSynthAction;
     repositories: Repositories;
     ecrCodeBuild: EcrCodeBuild;
     environments: EnvConfig[];

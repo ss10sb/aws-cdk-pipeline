@@ -1,18 +1,18 @@
 import {NonConstruct} from "@smorken/cdk-utils";
 import {IStringParameter} from "@aws-cdk/aws-ssm";
-import {SynthStep} from "../pipeline/synth-step";
+import {CodePipelineSynthStep} from "../pipeline/code-pipeline-synth-step";
 import {Repositories} from "../factories/repositories";
 import {EnvConfig} from "../definitions/env-config";
 import {Construct, Stack} from "@aws-cdk/core";
 import {IPrincipal} from "@aws-cdk/aws-iam";
 import {Permissions} from "../factories/permissions";
-import {EcrSteps} from "../pipeline/ecr-steps";
+import {CodePipelineEcrSteps} from "../pipeline/code-pipeline-ecr-steps";
 
 export interface CodePipelineStackPermissionsProps {
     configParam: IStringParameter;
-    synth: SynthStep;
+    synth: CodePipelineSynthStep;
     repositories: Repositories;
-    ecrSteps: EcrSteps;
+    ecrSteps: CodePipelineEcrSteps;
     environments: EnvConfig[];
 }
 

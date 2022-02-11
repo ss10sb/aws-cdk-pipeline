@@ -1,14 +1,14 @@
 import {StackConfig} from "../definitions/stack-config";
 import {ConfigStack} from "@smorken/cdk-utils";
 import {CodeStarSourceProps} from "../definitions/source";
-import {PipelinesCodeStarSource} from "../pipeline/code-star-source";
+import {CodePipelineCodeStarSource} from "../pipeline/code-pipeline-code-star-source";
 import {Repositories} from "../factories/repositories";
 import {NotificationRule} from "../pipeline/notification-rule";
-import {PipelinesPipeline, PipelinesPipelineProps} from "../pipeline/pipeline";
-import {PipelinesEnvStageProps, PipelinesEnvStages} from "../pipeline/env-stages";
-import {SynthStep} from "../pipeline/synth-step";
+import {CodePipelinePipeline, CodePipelinePipelineProps} from "../pipeline/code-pipeline-pipeline";
+import {CodePipelineEnvStageProps, CodePipelineEnvStages} from "../pipeline/code-pipeline-env-stages";
+import {CodePipelineSynthStep} from "../pipeline/code-pipeline-synth-step";
 import {CodePipelineStackPermissions} from "../permissions/code-pipeline-stack-permissions";
-import {EcrSteps, EcrStepsProps} from "../pipeline/ecr-steps";
+import {CodePipelineEcrSteps, CodePipelineEcrStepsProps} from "../pipeline/code-pipeline-ecr-steps";
 import {Wave} from "@aws-cdk/pipelines";
 
 export class CodePipelineStack<T extends StackConfig> extends ConfigStack<T> {
@@ -19,7 +19,7 @@ export class CodePipelineStack<T extends StackConfig> extends ConfigStack<T> {
         const repositories = this.createRepositories();
         const pipelineSource = this.createCodeStarSource(<CodeStarSourceProps>this.config.Parameters.sourceProps);
         const synthStep = this.createSynthStep(pipelineSource);
-        const pipelineProps: PipelinesPipelineProps = {
+        const pipelineProps: CodePipelinePipelineProps = {
             source: pipelineSource,
             repositories: repositories,
             synth: synthStep
@@ -49,25 +49,25 @@ export class CodePipelineStack<T extends StackConfig> extends ConfigStack<T> {
         return this.getNameFromConfig(this.config, suffix);
     }
 
-    private createEcrWave(pipeline: PipelinesPipeline, ecrSteps: EcrSteps): Wave {
+    private createEcrWave(pipeline: CodePipelinePipeline, ecrSteps: CodePipelineEcrSteps): Wave {
         return pipeline.pipeline.addWave('ecr-build', {
             post: ecrSteps.steps
         });
     }
 
-    private createEcrSteps(props: EcrStepsProps): EcrSteps {
-        return new EcrSteps(this, this.getName(), props);
+    private createEcrSteps(props: CodePipelineEcrStepsProps): CodePipelineEcrSteps {
+        return new CodePipelineEcrSteps(this, this.getName(), props);
     }
 
-    private createEnvironmentStages(props: PipelinesEnvStageProps): PipelinesEnvStages {
-        return new PipelinesEnvStages(this, 'env-stages', props);
+    private createEnvironmentStages(props: CodePipelineEnvStageProps): CodePipelineEnvStages {
+        return new CodePipelineEnvStages(this, 'env-stages', props);
     }
 
-    private createPipeline(props: PipelinesPipelineProps): PipelinesPipeline {
-        return new PipelinesPipeline(this, this.getName(), props);
+    private createPipeline(props: CodePipelinePipelineProps): CodePipelinePipeline {
+        return new CodePipelinePipeline(this, this.getName(), props);
     }
 
-    private createPipelineNotificationRule(pipeline: PipelinesPipeline): NotificationRule | undefined {
+    private createPipelineNotificationRule(pipeline: CodePipelinePipeline): NotificationRule | undefined {
         if (this.config.Parameters.pipelineNotification) {
             let props = this.config.Parameters.pipelineNotification;
             return new NotificationRule(this, this.getName(), {
@@ -79,8 +79,8 @@ export class CodePipelineStack<T extends StackConfig> extends ConfigStack<T> {
         }
     }
 
-    private createCodeStarSource(props: CodeStarSourceProps): PipelinesCodeStarSource {
-        return new PipelinesCodeStarSource(this, this.getName(), props);
+    private createCodeStarSource(props: CodeStarSourceProps): CodePipelineCodeStarSource {
+        return new CodePipelineCodeStarSource(this, this.getName(), props);
     }
 
     private createRepositories(): Repositories {
@@ -97,8 +97,8 @@ export class CodePipelineStack<T extends StackConfig> extends ConfigStack<T> {
         return this.cachedName;
     }
 
-    private createSynthStep(pipelineSource: PipelinesCodeStarSource) {
-        return new SynthStep(this, this.getName(), {
+    private createSynthStep(pipelineSource: CodePipelineCodeStarSource) {
+        return new CodePipelineSynthStep(this, this.getName(), {
             source: pipelineSource.source
         });
     }

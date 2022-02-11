@@ -1,7 +1,7 @@
 import {NonConstruct} from "@smorken/cdk-utils";
 import {Construct, Stack} from "@aws-cdk/core";
 import {IStringParameter} from "@aws-cdk/aws-ssm";
-import {SynthStep} from "../pipeline/synth-step";
+import {CodePipelineSynthStep} from "../pipeline/code-pipeline-synth-step";
 import {Permissions} from "../factories/permissions";
 import {Repositories} from "../factories/repositories";
 import {SimpleSynthAction} from "@aws-cdk/pipelines";
@@ -11,7 +11,7 @@ import {EnvConfig} from "../definitions/env-config";
 
 export interface PipelineStackPermissionsProps {
     configParam: IStringParameter;
-    synth: SynthStep | SimpleSynthAction;
+    synth: CodePipelineSynthStep | SimpleSynthAction;
     repositories: Repositories;
     ecrCodeBuild: EcrCodeBuild;
     environments: EnvConfig[];
@@ -72,7 +72,7 @@ export class PipelineStackPermissions extends NonConstruct {
     }
 
     protected getSynthGrantee(): IPrincipal {
-        if (this.props.synth instanceof SynthStep) {
+        if (this.props.synth instanceof CodePipelineSynthStep) {
             return this.props.synth.role.grantPrincipal;
         }
         return this.props.synth.grantPrincipal;
