@@ -9,11 +9,11 @@ export interface EcrStepProps {
     readonly repository: IRepository;
     readonly imageTag: string;
     readonly source: PipelinesCodeStarSource;
+    readonly role: IRole;
 }
 export declare class EcrStep extends NonConstruct {
     readonly props: EcrStepProps;
     readonly step: CodeBuildStep;
-    readonly role: IRole;
     constructor(scope: Construct, id: string, props: EcrStepProps);
     protected createStep(): CodeBuildStep;
     protected getCommands(): string[];
