@@ -4,8 +4,8 @@ import {Repositories} from "../factories/repositories";
 import {EnvConfig, EnvProps} from "../definitions/env-config";
 import {Construct} from "@aws-cdk/core";
 import {EnvStage} from "../env-stage";
-import {IStage} from "@aws-cdk/aws-codepipeline";
-import {CodePipelineStageActions} from "./code-pipeline-stage-actions";
+import {StageDeployment} from "@aws-cdk/pipelines";
+import {CodePipelineStageSteps} from "./code-pipeline-stage-steps";
 
 export interface CodePipelineEnvStageProps {
     pipeline: CodePipelinePipeline;
@@ -15,7 +15,7 @@ export interface CodePipelineEnvStageProps {
 
 export class CodePipelineEnvStages extends NonConstruct {
     readonly props: CodePipelineEnvStageProps;
-    readonly stages: IStage[];
+    readonly stages: StageDeployment[];
 
     constructor(scope: Construct, id: string, props: CodePipelineEnvStageProps) {
         super(scope, id);
@@ -45,24 +45,24 @@ export class CodePipelineEnvStages extends NonConstruct {
         return stage;
     }
 
-    protected createEnvironmentStages(): IStage[] {
-        let stages: IStage[] = [];
+    protected createEnvironmentStages(): StageDeployment[] {
+        let stages: StageDeployment[] = [];
         for (const envConfig of this.props.environments) {
             const deploy: boolean = envConfig.Parameters.deploy ?? true;
             if (deploy) {
                 const envStage = this.createEnvStageFromEnvironment(envConfig, {
                     repositories: this.props.repositories
                 });
-                const stage = this.props.pipeline.pipeline.pipeline.addStage(envStage);
-                this.actionsFromEnvironment(stage, envConfig);
+                const stage = this.props.pipeline.pipeline.addStage(envStage);
+                this.stepsFromEnvironment(stage, envConfig);
                 stages.push(stage);
             }
         }
         return stages;
     }
 
-    protected actionsFromEnvironment(stage: IStage, envConfig: EnvConfig): void {
-        const stageActions = new CodePipelineStageActions(stage);
-        stageActions.fromEnvConfig(envConfig);
+    protected stepsFromEnvironment(stage: StageDeployment, envConfig: EnvConfig): void {
+        const stageSteps = new CodePipelineStageSteps(stage);
+        stageSteps.fromEnvConfig(envConfig);
     }
 }

@@ -2,7 +2,7 @@ import {Config, ConfigParameters} from "@smorken/cdk-utils";
 import {EnvConfig} from "./env-config";
 import {RepositoryFactoryProps} from "../factories/repositories";
 import {CodeStarSourceProps} from "./source";
-import {NotificationRuleConfig} from "../pipeline/notification-rule";
+import {NotificationRuleConfig} from "../pipeline/notifications";
 
 export interface StackConfig extends Config {
     readonly Parameters: StackParameters;

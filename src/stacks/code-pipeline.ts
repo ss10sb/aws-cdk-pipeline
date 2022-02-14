@@ -3,13 +3,13 @@ import {ConfigStack} from "@smorken/cdk-utils";
 import {CodeStarSourceProps} from "../definitions/source";
 import {CodePipelineCodeStarSource} from "../pipeline/code-pipeline-code-star-source";
 import {Repositories} from "../factories/repositories";
-import {NotificationRule} from "../pipeline/notification-rule";
 import {CodePipelinePipeline, CodePipelinePipelineProps} from "../pipeline/code-pipeline-pipeline";
 import {CodePipelineEnvStageProps, CodePipelineEnvStages} from "../pipeline/code-pipeline-env-stages";
 import {CodePipelineSynthStep} from "../pipeline/code-pipeline-synth-step";
 import {CodePipelineStackPermissions} from "../permissions/code-pipeline-stack-permissions";
 import {CodePipelineEcrSteps, CodePipelineEcrStepsProps} from "../pipeline/code-pipeline-ecr-steps";
 import {Wave} from "@aws-cdk/pipelines";
+import {NotificationTargets} from "../pipeline/notification-targets";
 
 export class CodePipelineStack<T extends StackConfig> extends ConfigStack<T> {
     cachedName?: string;
@@ -35,7 +35,7 @@ export class CodePipelineStack<T extends StackConfig> extends ConfigStack<T> {
             repositories: repositories,
             environments: this.config.Environments
         });
-        this.createPipelineNotificationRule(pipeline);
+        this.createPipelineNotifications(pipeline);
         new CodePipelineStackPermissions(this, this.getName(), {
             configParam: configParam,
             synth: synthStep,
@@ -67,15 +67,20 @@ export class CodePipelineStack<T extends StackConfig> extends ConfigStack<T> {
         return new CodePipelinePipeline(this, this.getName(), props);
     }
 
-    private createPipelineNotificationRule(pipeline: CodePipelinePipeline): NotificationRule | undefined {
+    private createPipelineNotifications(pipeline: CodePipelinePipeline): void {
         if (this.config.Parameters.pipelineNotification) {
             let props = this.config.Parameters.pipelineNotification;
-            return new NotificationRule(this, this.getName(), {
+            const notificationTargets = new NotificationTargets(this, this.getName(), {
                 detailType: props.detailType,
                 events: props.events,
-                emails: props.emails,
-                source: pipeline.pipeline.pipeline,
+                emails: props.emails
             });
+            for (const target of notificationTargets.targets) {
+                pipeline.pipeline.pipeline.notifyOn(this.getName(), target, {
+                    detailType: props.detailType,
+                    events: props.events
+                });
+            }
         }
     }
 

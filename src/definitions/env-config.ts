@@ -23,6 +23,7 @@ export interface EnvParameters extends ParentEnvParameters {
     readonly dynamoDb?: DynamoDbProps;
     readonly subdomain?: string;
     readonly actions?: { [key: string]: object };
+    readonly steps?: { [key: string]: object };
     readonly healthCheck?: HealthCheck;
     readonly listenerRule: ListenerRuleProps;
     readonly targetGroup: TargetGroupProps;

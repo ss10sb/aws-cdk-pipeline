@@ -8,7 +8,7 @@ export declare class CodePipelineStack<T extends StackConfig> extends ConfigStac
     private createEcrSteps;
     private createEnvironmentStages;
     private createPipeline;
-    private createPipelineNotificationRule;
+    private createPipelineNotifications;
     private createCodeStarSource;
     private createRepositories;
     private getNameFromConfig;

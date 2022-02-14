@@ -29,6 +29,7 @@ export class CodePipelinePipeline extends NonConstruct {
             pipelineName: name,
             synth: this.props.synth.synth,
             dockerCredentials: [DockerCredential.ecr(this.getRepositoryArray())],
+            crossAccountKeys: true,
             assetPublishingCodeBuildDefaults: {
                 buildEnvironment: {
                     buildImage: LinuxBuildImage.STANDARD_5_0,
