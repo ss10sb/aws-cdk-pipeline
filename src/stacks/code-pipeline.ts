@@ -75,6 +75,7 @@ export class CodePipelineStack<T extends StackConfig> extends ConfigStack<T> {
                 events: props.events,
                 emails: props.emails
             });
+            pipeline.pipeline.buildPipeline();
             for (const target of notificationTargets.targets) {
                 pipeline.pipeline.pipeline.notifyOn(this.getName(), target, {
                     detailType: props.detailType,
